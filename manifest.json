@@ -1,0 +1,29 @@
+{
+  "short_name": "Expense Manager",
+  "name": "Expense Manager",
+  "description": "Track your spendings using expense manager",
+  "icons": [
+    {
+      "src": "icons/android-icon-1x.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "icons/android-icon-2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "icons/android-icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "icons/android-icon-4x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "./index.html?utm_source=homescreen",
+  "display": "standalone"
+}
