@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const utils = window.expenseManager.utils;
 
   // Cached DOM bindings

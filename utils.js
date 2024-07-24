@@ -1,4 +1,4 @@
-(function() {
+(function () {
   /**
    * @param {DOMElement} el
    */

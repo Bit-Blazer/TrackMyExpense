@@ -6,16 +6,14 @@ var urlsToCache = [
   "init.js",
   "transfer.js",
   "utils.js",
-  "expense.js",
-  "vendor/mdl/material.min.js",
-  "vendor/mdl/material.min.css"
+  "expense.js"
 ];
 
 // cache after the first install
-self.addEventListener("install", function(event) {
+self.addEventListener("install", function (event) {
   // Perform install steps
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
+    caches.open(CACHE_NAME).then(function (cache) {
       console.log("Opened cache");
       return cache.addAll(urlsToCache);
     })
@@ -23,22 +21,19 @@ self.addEventListener("install", function(event) {
 });
 
 // listen for fetch events
-self.addEventListener("fetch", function(event) {
+self.addEventListener("fetch", function (event) {
   const requestURL = new URL(event.request.url);
   event.respondWith(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return caches.match(event.request).then(function(response) {
-        var fetchPromise = fetch(event.request).then(function(networkResponse) {
-          // cache same host files only
-          if (
-            requestURL.hostname === "mitul45.github.io" ||
-            requestURL.hostname === "localhost"
-          )
-            cache.put(event.request, networkResponse.clone());
-          return networkResponse;
-        });
-        return response || fetchPromise;
+    caches.open(CACHE_NAME).then(async function (cache) {
+      const response = await caches.match(event.request);
+      var fetchPromise = fetch(event.request).then(function (networkResponse) {
+        // cache same host files only
+        if (requestURL.hostname === "" ||
+          requestURL.hostname === "localhost")
+          cache.put(event.request, networkResponse.clone());
+        return networkResponse;
       });
+      return response || fetchPromise;
     })
   );
 });
