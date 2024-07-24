@@ -20,12 +20,6 @@ body {
   margin-top: 15px;
 }
 
-#authorize-button {
-  display: none;
-  margin: auto;
-  font-size: 1.5em;
-}
-
 .footer {
   padding: 10px;
   background: #424242;
@@ -41,7 +35,7 @@ body {
 }
 
 #forms,
-#signout-button {
+#logout_button {
   display: none;
 }
 

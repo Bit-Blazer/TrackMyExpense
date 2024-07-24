@@ -1,166 +1,290 @@
-(function () {
-  const utils = window.expenseManager.utils;
+/**
+ * @typedef {Object} Config
+ * @property {string} CLIENT_ID - The Google OAuth 2.0 client ID
+ * @property {string} API_KEY - The Google API key
+ * @property {string[]} DISCOVERY_DOCS - URLs for API discovery
+ * @property {string} SCOPES - OAuth 2.0 scopes for the application
+ */
 
-  // Cached DOM bindings
-  const byID = document.getElementById.bind(document);
-  const authorizeButton = byID("authorize-button");
-  const signoutButton = byID("signout-button");
-  const forms = byID("forms");
-  const formLoader = byID("form-loader");
-  const snackbarContainer = byID("toast-container");
+/**
+ * @type {Config}
+ */
+const CONFIG = {
+  CLIENT_ID: "199896734762-4v1iljba22eglf9uiit3cmik36gspm6e.apps.googleusercontent.com",
+  API_KEY: "AIzaSyDu-qTR9Dr6Un5BCGE56hzPZcIUTY_uBZo",
+  DISCOVERY_DOCS: [
+    "https://sheets.googleapis.com/$discovery/rest?version=v4",
+    "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+  ],
+  SCOPES: "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.readonly",
+};
 
-  utils.hideLoader = utils.hideLoader.bind(null, forms, formLoader);
-  utils.showLoader = utils.showLoader.bind(null, forms, formLoader);
+/**
+ * @typedef {Object} DOMElements
+ * @property {HTMLElement} loginButton - The login button element
+ * @property {HTMLElement} logoutButton - The logout button element
+ * @property {HTMLElement} forms - The forms container element
+ * @property {HTMLElement} formLoader - The form loader element
+ * @property {HTMLElement} snackbar - The snackbar container element
+ */
 
-  /**
-  *  On load, called to load the auth2 library and API client library.
-  */
-  function handleClientLoad() {
-    gapi.load("client:auth2", initClient);
+/**
+ * @type {DOMElements}
+ */
+const DOM = {
+  loginButton: document.getElementById("login_button"),
+  logoutButton: document.getElementById("logout_button"),
+  forms: document.getElementById("forms"),
+  formLoader: document.getElementById("form-loader"),
+  snackbar: document.getElementById("snackbar"),
+};
+
+// Variables
+let tokenClient;
+let gapiInitialized = false;
+let gisInitialized = false;
+
+/**
+ * @typedef {Object} Utils
+ * @property {function(HTMLElement): void} showElement - Show an element
+ * @property {function(HTMLElement): void} hideElement - Hide an element
+ * @property {function(): void} showLoader - Show the loader
+ * @property {function(): void} hideLoader - Hide the loader
+ * @property {function(string): void} showSnackbar - Show a snackbar message
+ * @property {function(string): void} logSuccess - Log a success message
+ * @property {function(string, Error): void} logError - Log an error message
+ */
+
+/**
+ * @type {Utils}
+ */
+const utils = {
+  showElement: (el) => (el.style.display = "block"),
+  hideElement: (el) => (el.style.display = "none"),
+  showLoader: () => {
+    utils.hideElement(DOM.forms);
+    utils.showElement(DOM.formLoader);
+  },
+  hideLoader: () => {
+    utils.showElement(DOM.forms);
+    utils.hideElement(DOM.formLoader);
+  },
+  showSnackbar: (message) => {
+    // DOM.snackbar.MaterialSnackbar.showSnackbar({ message });
+  },
+  logSuccess: (message) => {
+    console.log(`✅ ${message}`);
+    utils.showSnackbar(message);
+  },
+  logError: (message, error) => {
+    console.error(`❌ ${message}`, error);
+    utils.showSnackbar(`Error: ${message}`);
+  },
+};
+
+/**
+ * Initializes the Google API client library
+ */
+function initGapi() {
+  gapi.load("client", async () => {
+    try {
+      await gapi.client.init({
+        apiKey: CONFIG.API_KEY,
+        discoveryDocs: CONFIG.DISCOVERY_DOCS,
+      });
+      gapiInitialized = true;
+      checkInitialization();
+      utils.logSuccess("Google API client initialized");
+    } catch (error) {
+      utils.logError("Failed to initialize Google API client", error);
+    }
+  });
+}
+
+/**
+ * Initializes Google Identity Services
+ */
+function initGis() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CONFIG.CLIENT_ID,
+    scope: CONFIG.SCOPES,
+    callback: handleAuthResponse,
+  });
+  gisInitialized = true;
+  checkInitialization();
+  utils.logSuccess("Google Identity Services initialized");
+}
+
+/**
+ * Checks if both GAPI and GIS are initialized
+ */
+function checkInitialization() {
+  if (gapiInitialized && gisInitialized) {
+    utils.showElement(DOM.loginButton);
   }
+}
 
-  /**
-  *  Sign in the user upon button click.
-  */
-  function handleAuthClick(event) {
-    gapi.auth2.getAuthInstance().signIn();
+/**
+ * Handles the authentication response
+ * @param {Object} response - The authentication response object
+ */
+function handleAuthResponse(response) {
+  if (response.error) {
+    utils.logError("Authentication failed", response.error);
+    return;
   }
+  utils.logSuccess("Authentication successful");
+  initializeApp();
+}
 
-  /**
-  *  Sign out the user upon button click.
-  */
-  function handleSignoutClick(event) {
-    gapi.auth2.getAuthInstance().signOut();
+/**
+ * Handles the login process
+ */
+function handleLogin() {
+  if (gapi.client.getToken() === null) {
+    tokenClient.requestAccessToken({ prompt: "consent" });
+  } else {
+    tokenClient.requestAccessToken({ prompt: "" });
   }
+}
 
-  /**
-  *  Initializes the API client library and sets up sign-in state
-  *  listeners.
-  */
-  function initClient() {
-    const CLIENT_ID =
-      "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
-    const DISCOVERY_DOCS = [
-      "https://sheets.googleapis.com/$discovery/rest?version=v4",
-      "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"
-    ];
+/**
+ * Handles the logout process
+ */
+function handleLogout() {
+  const token = gapi.client.getToken();
+  if (token) {
+    google.accounts.oauth2.revoke(token.access_token);
+    gapi.client.setToken("");
+    utils.showLoader();
+    utils.showElement(DOM.loginButton);
+    utils.hideElement(DOM.logoutButton);
+    utils.logSuccess("Logged out successfully");
+  }
+}
 
-    // Write access for spreadsheet to add expenses, readonly access for drive to find sheet ID
-    const SCOPES =
-      "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.metadata.readonly";
+/**
+ * Initializes the application
+ */
+async function initializeApp() {
+  utils.hideElement(DOM.loginButton);
+  utils.showElement(DOM.logoutButton);
+  utils.hideLoader();
 
-    gapi.client
-      .init({
-        discoveryDocs: DISCOVERY_DOCS,
-        clientId: CLIENT_ID,
-        scope: SCOPES
+  try {
+    const sheetId = await getOrCreateSheet();
+    const { accounts, categories } = await fetchSheetData(sheetId);
+    initializeForms(sheetId, accounts, categories);
+    utils.logSuccess("App initialized successfully");
+  } catch (error) {
+    utils.logError("Failed to initialize app", error);
+  }
+}
+
+/**
+ * Gets or creates a sheet
+ * @returns {Promise<string>} The sheet ID
+ */
+async function getOrCreateSheet() {
+  try {
+    const sheetId = await findSheet();
+    utils.logSuccess("Existing sheet found");
+    return sheetId;
+  } catch {
+    utils.logError("Sheet Not Found...");
+    utils.logSuccess("Creating new sheet");
+    return createSheet();
+  }
+}
+
+/**
+ * Finds an existing sheet
+ * @returns {Promise<string>} The sheet ID
+ */
+function findSheet() {
+  return new Promise((resolve, reject) => {
+    gapi.client.drive.files
+      .list({
+        q: `name='Expense Sheet' and mimeType='application/vnd.google-apps.spreadsheet'`,
       })
-      .then(() => {
-        // Listen for sign-in state changes.
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+      .then((response) => {
+        if (response.result.files.length === 0) reject();
+        else resolve(response.result.files[0].id);
+      })
+      .catch(reject);
+  });
+}
 
-        // Handle the initial sign-in state.
-        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-        authorizeButton.onclick = handleAuthClick.bind(null);
-        signoutButton.onclick = handleSignoutClick.bind(null);
-      });
-  }
+/**
+ * Creates a new sheet
+ * @returns {Promise<string>} The new sheet ID
+ */
+function createSheet() {
+  return new Promise((resolve, reject) => {
+    gapi.client.sheets.spreadsheets
+      .create({
+        properties: { title: "Expense Sheet" },
+        sheets: [
+          {
+            properties: {
+              title: "Expenses",
+              gridProperties: { columnCount: 4, frozenRowCount: 1 },
+            },
+            data: [
+              {
+                rowData: [
+                  {
+                    values: [
+                      { userEnteredValue: { stringValue: "Description" } },
+                      { userEnteredValue: { stringValue: "Amount" } },
+                      { userEnteredValue: { stringValue: "Category" } },
+                      { userEnteredValue: { stringValue: "Date" } },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .then((response) => {
+        const sheetId = response.result.spreadsheetId;
+        utils.logSuccess(`New sheet created with ID: ${sheetId}`);
+        resolve(sheetId);
+      })
+      .catch(reject);
+  });
+}
 
-  /**
-  *  Called when the signed in status changes, to update the UI
-  *  appropriately. After a sign-in, find expense sheet id.
-  */
-  function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-      onSignin();
-    } else {
-      utils.showEl(authorizeButton);
-      utils.hideEl(signoutButton);
-      utils.hideEl(forms);
-      utils.hideEl(formLoader);
-    }
-  }
+/**
+ * Fetches sheet data
+ * @param {string} sheetId - The sheet ID
+ * @returns {Promise<{accounts: string[], categories: string[]}>} The fetched data
+ */
+async function fetchSheetData(sheetId) {
+  const ACCOUNT_RANGE = "Data!A2:A50";
+  const CATEGORY_RANGE = "Data!E2:E50";
+  const response = await gapi.client.sheets.spreadsheets.values.batchGet(
+    window.expenseManager.utils.batchGetRequestObj(sheetId, [ACCOUNT_RANGE, CATEGORY_RANGE])
+  );
+  return {
+    accounts: response.result.valueRanges[0].values[0],
+    categories: response.result.valueRanges[1].values[0],
+  };
+}
 
-  /**
-  * On successful signin - Update authorization buttons, make a call to get sheetID
-  */
-  function onSignin() {
-    utils.hideEl(authorizeButton);
-    utils.showEl(signoutButton);
+/**
+ * Initializes the forms
+ * @param {string} sheetId - The sheet ID
+ * @param {string[]} accounts - List of account names
+ * @param {string[]} categories - List of expense categories
+ */
+function initializeForms(sheetId, accounts, categories) {
+  window.expenseManager.expenseForm.init(sheetId, accounts, categories);
+  window.expenseManager.transferForm.init(sheetId, accounts);
+  utils.logSuccess("Forms initialized");
+}
 
-    getSheetID("Expense Sheet")
-      .then(getCategoriesAndAccount, sheetNotFound)
-      .then(initApp);
-
-    function sheetNotFound() {
-      snackbarContainer.MaterialSnackbar.showSnackbar({
-        message: "Cannot find the sheet!",
-        actionHandler: () => {
-          window.open(
-            "https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started",
-            "_blank"
-          );
-        },
-        actionText: "Details",
-        timeout: 5 * 60 * 1000
-      });
-    }
-  }
-
-  /**
-  * Get sheet ID for a given sheet name
-  *
-  * @param {String} sheetName Sheet name to search in user's drive
-  * @returns {Promise} a promise resolves successfully with sheetID if it's available in user's drive
-  */
-  function getSheetID(sheetName) {
-    return new Promise((resolve, reject) => {
-      gapi.client.drive.files
-        .list({
-          q: `name='${sheetName}' and mimeType='application/vnd.google-apps.spreadsheet'`,
-          orderBy: "starred"
-        })
-        .then(response => {
-          if (response.result.files.length === 0) reject();
-          else resolve(response.result.files[0].id);
-        });
-    });
-  }
-
-  /**
-    * Fetch all accounts, and categories info from spreadsheet
-    *
-    * @param {String} sheetID Expense sheetID
-    */
-  function getCategoriesAndAccount(sheetID) {
-    return new Promise((resolve, reject) => {
-      const ACCOUNT_RANGE = "Data!A2:A50";
-      const CATEGORY_RANGE = "Data!E2:E50";
-
-      gapi.client.sheets.spreadsheets.values
-        .batchGet(
-          utils.batchGetRequestObj(sheetID, [ACCOUNT_RANGE, CATEGORY_RANGE])
-        )
-        .then(response => {
-          const accounts = response.result.valueRanges[0].values[0];
-          const categories = response.result.valueRanges[1].values[0];
-          resolve({ sheetID, accounts, categories });
-        });
-    });
-  }
-
-  function initApp(data) {
-    utils.hideLoader();
-
-    window.expenseManager.expenseForm.init(
-      data.sheetID,
-      data.accounts,
-      data.categories
-    );
-    window.expenseManager.transferForm.init(data.sheetID, data.accounts);
-
-    utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
-  }
-
-  window.handleClientLoad = handleClientLoad.bind(null);
-})();
+// Initialization
+window.gapiLoaded = initGapi;
+window.gisLoaded = initGis;
