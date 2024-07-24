@@ -1,27 +1,17 @@
 {
-  "short_name": "Expense Manager",
-  "name": "Expense Manager",
-  "description": "Track your spendings using expense manager",
+  "short_name": "TrackMyExpense",
+  "name": "TrackMyExpense",
+  "description": "Track and Manage your Expenses directly using Google Sheets",
   "icons": [
     {
-      "src": "icons/android-icon-1x.png",
-      "type": "image/png",
-      "sizes": "48x48"
+      "src": "icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "icons/android-icon-2x.png",
-      "type": "image/png",
-      "sizes": "96x96"
-    },
-    {
-      "src": "icons/android-icon-144x144.png",
-      "type": "image/png",
-      "sizes": "144x144"
-    },
-    {
-      "src": "icons/android-icon-4x.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "start_url": "./index.html?utm_source=homescreen",
