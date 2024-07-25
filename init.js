@@ -37,7 +37,31 @@ const DOM = {
   forms: document.getElementById("forms"),
   formLoader: document.getElementById("form-loader"),
   snackbar: document.getElementById("toast-container"),
+
+  expenseForm: document.getElementById("expense-form"),
+  transferForm: document.getElementById("transfer-form"),
+
+  expensedescription: document.getElementById("expense-description"),
+  transferdescription: document.getElementById("transfer-description"),
+
+  expensedate: document.getElementById("expense-date"),
+  transferdate: document.getElementById("transfer-date"),
+
+  accountEl: document.getElementById("expense-account"),
+  categoryEl: document.getElementById("expense-category"),
+
+  expenseamount: document.getElementById("expense-amount"),
+  transferamount: document.getElementById("transfer-amount"),
+
+  isIncomeEl: document.getElementById("is-income"),
+  addExpenseBtn: document.getElementById("add-expense"),
+  fromAccountEl: document.getElementById("transfer-from-account"),
+  toAccountEl: document.getElementById("transfer-to-account"),
+  saveBtn: document.getElementById("save"),
 };
+
+// Initialize Material Components
+mdc.autoInit();
 
 // Variables
 let tokenClient;
