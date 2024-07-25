@@ -36,7 +36,7 @@ const DOM = {
   logoutButton: document.getElementById("logout_button"),
   forms: document.getElementById("forms"),
   formLoader: document.getElementById("form-loader"),
-  snackbar: document.getElementById("snackbar"),
+  snackbar: document.getElementById("toast-container"),
 };
 
 // Variables
@@ -44,43 +44,7 @@ let tokenClient;
 let gapiInitialized = false;
 let gisInitialized = false;
 
-/**
- * @typedef {Object} Utils
- * @property {function(HTMLElement): void} showElement - Show an element
- * @property {function(HTMLElement): void} hideElement - Hide an element
- * @property {function(): void} showLoader - Show the loader
- * @property {function(): void} hideLoader - Hide the loader
- * @property {function(string): void} showSnackbar - Show a snackbar message
- * @property {function(string): void} logSuccess - Log a success message
- * @property {function(string, Error): void} logError - Log an error message
- */
-
-/**
- * @type {Utils}
- */
-const utils = {
-  showElement: (el) => (el.style.display = "block"),
-  hideElement: (el) => (el.style.display = "none"),
-  showLoader: () => {
-    utils.hideElement(DOM.forms);
-    utils.showElement(DOM.formLoader);
-  },
-  hideLoader: () => {
-    utils.showElement(DOM.forms);
-    utils.hideElement(DOM.formLoader);
-  },
-  showSnackbar: (message) => {
-    // DOM.snackbar.MaterialSnackbar.showSnackbar({ message });
-  },
-  logSuccess: (message) => {
-    console.log(`✅ ${message}`);
-    utils.showSnackbar(message);
-  },
-  logError: (message, error) => {
-    console.error(`❌ ${message}`, error);
-    utils.showSnackbar(`Error: ${message}`);
-  },
-};
+const utils = window.expenseManager.utils;
 
 /**
  * Initializes the Google API client library
