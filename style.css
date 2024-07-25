@@ -70,3 +70,31 @@ body {
 .material-icons {
   font-size: 14px;
 }
+
+.app-fab--absolute {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 56px;
+  height: 56px;
+  transition: all 0.2s ease;
+  .mdc-fab__label {
+    display: none;
+  }
+
+  &:hover {
+    width: auto;
+    padding: 20px;
+    border-radius: 24px;
+    .mdc-fab__label {
+      display: inline;
+    }
+    .mdc-fab__icon {
+      margin-left: calc(12px - 20px);
+      margin-right: 12px;
+    }
+    .mdc-fab__ripple {
+      border-radius: 24px;
+    }
+  }
+}
