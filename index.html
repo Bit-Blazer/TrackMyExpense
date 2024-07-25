@@ -135,13 +135,19 @@
             <a href="https://developers.google.com/sheets/">Google Sheets API</a>
             and <a href="https://getmdl.io">Material Design Lite</a>.
           </footer>
+    <div id="toast-container" class="mdc-snackbar">
+      <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+        <div class="mdc-snackbar__label" aria-atomic="false">
+          Can't send photo.
         </div>
-        <div id="toast-container" class="mdl-js-snackbar mdl-snackbar">
-          <div class="mdl-snackbar__text"></div>
-          <button class="mdl-snackbar__action" type="button"></button>
+        <div class="mdc-snackbar__actions" aria-atomic="true">
+          <button type="button" class="mdc-button mdc-snackbar__action">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Retry</span>
+          </button>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 
   <script type="text/javascript" src="utils.js"></script>
