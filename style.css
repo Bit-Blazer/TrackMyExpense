@@ -98,3 +98,8 @@ body {
     }
   }
 }
+
+.mdc-data-table {
+  width: 90%;
+  margin: 20px;
+}

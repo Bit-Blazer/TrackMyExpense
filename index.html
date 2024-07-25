@@ -2,160 +2,212 @@
 <html lang="en">
 
 <head>
-  <title>Expense Tracker</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Expense Tracker</title>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Material Icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+  <!-- Material Design Lite CSS and JS -->
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
+  <!-- Material Components Web CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" />
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="style.css" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-  <link rel="shortcut icon" href="icons/favicon.ico">
-  <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="apple-mobile-web-app-title" content="TrackMyExpense">
-  <meta name="application-name" content="TrackMyExpense">
+  <!-- Favicon and app icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png" />
+  <link rel="shortcut icon" href="icons/favicon.ico" />
+  <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#5bbad5" />
+  <meta name="apple-mobile-web-app-title" content="TrackMyExpense" />
+  <meta name="application-name" content="TrackMyExpense" />
 
+  <!-- Web app manifest -->
   <link rel="manifest" href="manifest.json" />
 </head>
 
 <body>
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <h1 class="mdl-layout-title mdc-typography--headline4">Expense Tracker</h1>
-        <div class="mdl-layout-spacer"></div>
-        <nav class="mdl-navigation">
-          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-            id="login_button" onclick="handleLogin()">Log In</button>
-          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-            id="logout_button" onclick="handleLogout()">Log Out</button>
-        </nav>
-      </div>
-    </header>
+  <!-- Top app bar -->
+  <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+    <div class="mdc-top-app-bar__row">
 
-    <main class="mdl-layout__content">
-      <div class="page-content">
-        <div class="flex-container">
-          <div class="mdl-spinner mdl-js-spinner is-active" id="form-loader"></div>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <span class="mdc-top-app-bar__title mdc-typography--headline4">Expense Tracker</span>
+      </section>
 
-          <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" id="forms">
-            <div class="mdl-tabs__tab-bar">
-              <a href="#add-expense" class="mdl-tabs__tab is-active">
-                Expense</a>
-              <a href="#transfer" class="mdl-tabs__tab"> Transfer </a>
-            </div>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
 
-            <div class="mdl-tabs__panel is-active" id="add-expense">
-              <form id="expense-form">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="expense-description" data-required />
-                  <label class="mdl-textfield__label" for="expense-description">Description</label>
-                </div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="date" id="expense-date" data-required />
-                </div>
-                <div class="dropdown">
-                  <span>From Account</span>
-                  <select id="expense-account" data-required></select>
-                </div>
-                <div class="dropdown">
-                  <span>Category</span>
-                  <select id="expense-category" data-required></select>
-                </div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="number" id="expense-amount" step="0.01" data-required />
-                  <label class="mdl-textfield__label" for="expense-amount">Amount</label>
-                </div>
-                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="is-income">
-                  <input type="checkbox" id="is-income" class="mdl-switch__input" />
-                  <span class="mdl-switch__label"> income? </span>
-                </label>
-                <br />
-                <br />
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                  id="add-expesne" type="submit">
-                  Save
-                </button>
-              </form>
-            </div>
-            <div class="mdl-tabs__panel" id="transfer">
-              <form id="transfer-form">
-                <p id="tt1">
-                  <i class="material-icons">info</i>&nbsp;What is this?
-                </p>
-                <span for="tt1" class="mdl-tooltip">Record a transaction which is not expense/income. e.g.
-                  paying for your credit card bills (saving account -> credit
-                  card), withdrawing cash (checkings account -> cash), or
-                  making an investment.</span>
+        <button class="mdc-button mdc-button--raised" id="login_button" onclick="handleLogin()">
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label">Log In</span>
+        </button>
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="transfer-description" data-required />
-                  <label class="mdl-textfield__label" for="transfer-description">Description</label>
-                </div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="date" id="transfer-date" data-required />
-                  <label class="mdl-textfield__label" for="transfer-date">Date</label>
-                </div>
-                <div class="dropdown">
-                  <span>From Account</span>
-                  <select id="transfer-from-account" data-required></select>
-                </div>
-                <div class="dropdown">
-                  <span>To Account</span>
-                  <select id="transfer-to-account" data-required></select>
-                </div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="number" id="transfer-amount" step="0.01" data-required />
-                  <label class="mdl-textfield__label" for="transfer-amount">Amount</label>
-                </div>
-                <br />
-                <br />
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                  id="save" type="submit" onclick="addExpense(event)">
-                  Save
-                </button>
-              </form>
-            </div>
-    <button class="mdc-fab app-fab--absolute" aria-label="Add" id="add-expense-button">
-      <div class="mdc-fab__ripple"></div>
-      <span class="mdc-fab__icon material-icons">add</span>
-      <span class="mdc-fab__label">Create</span>
-    </button>
+        <button class="mdc-button mdc-button--raised" id="logout_button" onclick="handleLogout()">
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label">Log Out</span>
+        </button>
+
+      </section>
+
+    </div>
+  </header>
+  <div class="mdc-top-app-bar--fixed-adjust">
+
+    <!-- Expense Table -->
+    <main>
+      <section class="expenses-list">
+        <h5>Expenses List</h5>
+        <div class="mdc-data-table">
+          <div class="mdc-data-table__table-container">
+
+            <table class="mdc-data-table__table" aria-label="Expense list">
+
+              <thead>
+                <tr class="mdc-data-table__header-row">
+                  <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Date</th>
+                  <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Category</th>
+                  <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Description</th>
+                  <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Amount</th>
+                </tr>
+              </thead>
+
+              <tbody class="mdc-data-table__content" id="expenses-table">
+                <!-- Expenses will be added here dynamically -->
+              </tbody>
+
+            </table>
           </div>
+        </div>
+      </section>
+    </main>
+    <!-- <div class="page-content">
+            <div class="flex-container">
+              <div class="mdl-spinner mdl-js-spinner is-active" id="form-loader"></div>
+            
+              <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" id="forms">
+                <div class="mdl-tabs__tab-bar">
+                  <a href="#add-expense" class="mdl-tabs__tab is-active">
+                    Expense</a>
+                  <a href="#transfer" class="mdl-tabs__tab"> Transfer </a>
+                </div>
+            
+                <div class="mdl-tabs__panel is-active" id="expense">
+                  <form id="expense-form">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="expense-description" data-required />
+                      <label class="mdl-textfield__label" for="expense-description">Description</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="date" id="expense-date" data-required />
+                    </div>
+                    <div class="dropdown">
+                      <span>From Account</span>
+                      <select id="expense-account" data-required></select>
+                    </div>
+                    <div class="dropdown">
+                      <span>Category</span>
+                      <select id="expense-category" data-required></select>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="number" id="expense-amount" step="0.01" data-required />
+                      <label class="mdl-textfield__label" for="expense-amount">Amount</label>
+                    </div>
+                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="is-income">
+                      <input type="checkbox" id="is-income" class="mdl-switch__input" />
+                      <span class="mdl-switch__label"> income? </span>
+                    </label>
+                    <br />
+                    <br />
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                      id="add-expense" type="submit">
+                      Save
+                    </button>
+                  </form>
+                </div>
+            
+                <div class="mdl-tabs__panel" id="transfer">
+                  <form id="transfer-form">
+                    <p id="tt1">
+                      <i class="material-icons">info</i>&nbsp;What is this?
+                    </p>
+                    <span for="tt1" class="mdl-tooltip">Record a transaction which is not expense/income. e.g.
+                      paying for your credit card bills (saving account ->
+                      credit card), withdrawing cash (checkings account ->
+                      cash), or making an investment.</span>
+            
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="transfer-description" data-required />
+                      <label class="mdl-textfield__label" for="transfer-description">Description</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="date" id="transfer-date" data-required />
+                      <label class="mdl-textfield__label" for="transfer-date">Date</label>
+                    </div>
+                    <div class="dropdown">
+                      <span>From Account</span>
+                      <select id="transfer-from-account" data-required></select>
+                    </div>
+                    <div class="dropdown">
+                      <span>To Account</span>
+                      <select id="transfer-to-account" data-required></select>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="number" id="transfer-amount" step="0.01" data-required />
+                      <label class="mdl-textfield__label" for="transfer-amount">Amount</label>
+                    </div>
+                    <br />
+                    <br />
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                      id="save" type="submit" onclick="addExpense(event)">
+                      Save
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            </div> -->
+  </div>
 
-          <footer class="footer">
-            Built using
-            <a href="https://developers.google.com/sheets/">Google Sheets API</a>
-            and <a href="https://getmdl.io">Material Design Lite</a>.
-          </footer>
-    <div id="toast-container" class="mdc-snackbar">
-      <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
-        <div class="mdc-snackbar__label" aria-atomic="false">
-          Can't send photo.
-        </div>
-        <div class="mdc-snackbar__actions" aria-atomic="true">
-          <button type="button" class="mdc-button mdc-snackbar__action">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">Retry</span>
-          </button>
-        </div>
+  <!-- Floating Action Button for adding expenses -->
+  <button class="mdc-fab app-fab--absolute" aria-label="Add Expense" id="add-expense-button">
+    <div class="mdc-fab__ripple"></div>
+    <span class="mdc-fab__icon material-icons">add</span>
+    <span class="mdc-fab__label">Add Expense</span>
+  </button>
+
+  <!-- Toast/Snackbar for notifications -->
+  <div class="mdc-snackbar" id="toast-container">
+    <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+      <div class="mdc-snackbar__label" aria-atomic="false">
+        <!-- Snackbar message will be set dynamically -->
+      </div>
+      <div class="mdc-snackbar__actions" aria-atomic="true">
+        <button type="button" class="mdc-button mdc-snackbar__action">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Retry</span>
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- JavaScript files -->
   <script type="text/javascript" src="utils.js"></script>
   <script type="text/javascript" src="expense.js"></script>
   <script type="text/javascript" src="transfer.js"></script>
   <script type="text/javascript" src="init.js"></script>
   <script type="text/javascript" src="register-serviceworker.js"></script>
 
+  <!-- Google API and Sign-In scripts -->
   <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
   <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 
