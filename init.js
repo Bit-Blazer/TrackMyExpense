@@ -277,28 +277,14 @@ function initializeForms(sheetId, accounts, categories) {
 window.gapiLoaded = initGapi;
 window.gisLoaded = initGis;
 
-
-
-
-
-const drawerList = document.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.querySelector('.main-content');
-
-
-
 const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
-
-const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
 topAppBar.setScrollTarget(document.getElementById('main-content'));
 topAppBar.listen('MDCTopAppBar:nav', () => {
   drawer.open = !drawer.open;
 });
 
+const drawerList = document.querySelector('.mdc-drawer .mdc-list');
 drawerList.addEventListener('click', () => {
   drawer.open = false;
 });
-
-// document.body.addEventListener('MDCDrawer:closed', () => {
-//   mainContentEl.querySelector('input, button').focus();
-// });
-

@@ -38,7 +38,7 @@ body {
 
 .mdc-data-table {
   width: 90%;
-  margin: 20px;
+  margin: 1.5rem;
 }
 
 .card-container {
@@ -47,19 +47,19 @@ body {
   width: 80%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 16px;
-  gap: 16px;
+  padding: 1rem;
+  gap: 1rem;
   border-radius: 0.8rem;
 }
 
 .mdc-card {
   min-width: 12rem;
-  padding: 16px;
+  padding: 1rem;
   border-radius: 0.8rem;
 }
 
 .mdc-typography--headline6 {
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .mdc-typography--subtitle1 {

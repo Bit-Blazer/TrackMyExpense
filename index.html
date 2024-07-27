@@ -38,8 +38,8 @@
 
 <body>
 
-  <!-- Top app bar -->
-  <header class="mdc-top-app-bar mdc-top-app-bar--fixed" id="app-bar">
+  <!-- App bar -->
+  <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
     <div class="mdc-top-app-bar__row">
 
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
@@ -69,6 +69,7 @@
     </div>
   </header>
 
+  <!-- App Drawer -->
   <aside class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
       <ul class="mdc-list">
@@ -81,7 +82,7 @@
 
         <li class="mdc-list-divider" role="separator"></li>
 
-        <li class="mdc-list-item mdc-list-item--with-leading-icon mdc-list-item--activated mdc-list-item--with-one-line"
+        <li class="mdc-list-item mdc-list-item--with-leading-icon mdc-list-item--with-one-line mdc-list-item--activated"
           aria-selected="true" aria-current="page" tabindex="0">
           <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__start">
@@ -130,8 +131,9 @@
 
   <!-- Body -->
   <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
-    <!-- Expense Table -->
     <main class="main-content" id="main-content">
+
+      <!-- Cards -->
       <section class="card-container">
 
         <!-- Total Income Card -->
@@ -157,8 +159,10 @@
           <p class="mdc-typography--subtitle1">$56500</p>
           <div class="mdc-typography--caption">+19%</div>
         </div>
-        
+
       </section>
+
+      <!-- Expense Table -->
       <section class="expenses-list">
         <h5 class="mdc-typography--headline5">Expenses List</h5>
         <div class="mdc-data-table">
@@ -277,30 +281,30 @@
               </div>
             </div>
             </div> -->
-  </div>
 
-  <!-- Floating Action Button for adding expenses -->
-  <button class="mdc-fab app-fab--absolute" aria-label="Add Expense" id="add-expense-button">
-    <div class="mdc-fab__ripple"></div>
-    <span class="mdc-fab__icon material-icons">add</span>
-    <span class="mdc-fab__label">Add Expense</span>
-  </button>
 
-  <!-- Toast/Snackbar for notifications -->
-  <div class="mdc-snackbar" id="toast-container">
-    <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
-      <div class="mdc-snackbar__label" aria-atomic="false">
-        <!-- Snackbar message will be set dynamically -->
-      </div>
-      <div class="mdc-snackbar__actions" aria-atomic="true">
-        <button type="button" class="mdc-button mdc-snackbar__action">
-          <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Dismiss</span>
-        </button>
+    <!-- Floating Action Button for adding expenses -->
+    <button class="mdc-fab app-fab--absolute" aria-label="Add Expense" id="add-expense-button">
+      <div class="mdc-fab__ripple"></div>
+      <span class="mdc-fab__icon material-icons">add</span>
+      <span class="mdc-fab__label">Add Expense</span>
+    </button>
+
+    <!-- Toast/Snackbar for notifications -->
+    <div class="mdc-snackbar" id="toast-container">
+      <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+        <div class="mdc-snackbar__label" aria-atomic="false">
+          <!-- Snackbar message will be set dynamically -->
+        </div>
+        <div class="mdc-snackbar__actions" aria-atomic="true">
+          <button type="button" class="mdc-button mdc-snackbar__action">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Dismiss</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-
   <!-- JavaScript files -->
   <script type="text/javascript" src="utils.js"></script>
   <script type="text/javascript" src="expense.js"></script>
