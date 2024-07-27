@@ -38,21 +38,27 @@
 <body>
 
   <!-- Top app bar -->
-  <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <header class="mdc-top-app-bar mdc-top-app-bar--fixed" id="app-bar">
     <div class="mdc-top-app-bar__row">
 
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <span class="mdc-top-app-bar__title mdc-typography--headline4">Expense Tracker</span>
+        <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
+          aria-label="Open navigation menu">
+          menu
+        </button>
+        <span class="mdc-top-app-bar__title">TrackMyExpense</span>
       </section>
 
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
 
-        <button class="mdc-button mdc-button--raised" id="login_button" onclick="handleLogin()">
+        <button class="mdc-button mdc-button--raised mdc-top-app-bar__action-item" id="login_button"
+          onclick="handleLogin()">
           <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">Log In</span>
         </button>
 
-        <button class="mdc-button mdc-button--raised" id="logout_button" onclick="handleLogout()">
+        <button class="mdc-button mdc-button--raised mdc-top-app-bar__action-item" id="logout_button"
+          onclick="handleLogout()">
           <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">Log Out</span>
         </button>
@@ -61,16 +67,53 @@
 
     </div>
   </header>
-  <div class="mdc-top-app-bar--fixed-adjust">
 
+  <aside class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <div class="mdc-drawer__header">
+          <h3 class="mdc-typography--headline6">TrackMyExpense</h3>
+        </div>
+
+        <hr class="mdc-list-divider" />
+
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" aria-current="page"
+          tabindex="0">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
+          <span class="mdc-list-item__text">Dashboard</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
+          <span class="mdc-list-item__text">Transactions</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
+          <span class="mdc-list-item__text">Reports</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_balance</i>
+          <span class="mdc-list-item__text">Bank Accounts</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-scrim"></div>
+
+  <!-- Body -->
+  <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
     <!-- Expense Table -->
-    <main>
+    <main class="main-content" id="main-content">
       <section class="expenses-list">
         <h5>Expenses List</h5>
         <div class="mdc-data-table">
           <div class="mdc-data-table__table-container">
 
-            <table class="mdc-data-table__table" aria-label="Expense list">
+            <table class="mdc-data-table__table" aria-label="Expense Records">
 
               <thead>
                 <tr class="mdc-data-table__header-row">
@@ -82,6 +125,12 @@
               </thead>
 
               <tbody class="mdc-data-table__content" id="expenses-table">
+                <tr class="mdc-data-table__row">
+                  <td class="mdc-data-table__cell">2024-07-26</td>
+                  <td class="mdc-data-table__cell">Groceries</td>
+                  <td class="mdc-data-table__cell">Bought Cucumber</td>
+                  <td class="mdc-data-table__cell">$50</td>
+                </tr>
                 <!-- Expenses will be added here dynamically -->
               </tbody>
 
@@ -90,6 +139,7 @@
         </div>
       </section>
     </main>
+
     <!-- <div class="page-content">
             <div class="flex-container">
               <div class="mdl-spinner mdl-js-spinner is-active" id="form-loader"></div>
@@ -194,7 +244,7 @@
       <div class="mdc-snackbar__actions" aria-atomic="true">
         <button type="button" class="mdc-button mdc-snackbar__action">
           <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Retry</span>
+          <span class="mdc-button__label">Dismiss</span>
         </button>
       </div>
     </div>
