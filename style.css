@@ -1,76 +1,9 @@
-body {
-  font-size: 16px;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  /* 100vh - header height */
-  min-height: calc(100vh - 56px);
-  width: 100vw;
-}
-
-#expense-form,
-#transfer-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 15px;
-}
-
-.footer {
-  padding: 10px;
-  background: #424242;
-  color: #9e9e9e;
-  font-weight: 300 !important;
-  margin-top: 15px;
-  font-size: 12px;
-}
-
-.footer a {
-  color: white;
-  font-size: 12px;
-}
-
-#forms,
-#logout_button {
-  display: none;
-}
-
-#form-loader {
-  margin: auto;
-}
-
-.dropdown {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 300px;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-.dropdown select {
-  margin-left: 10px;
-  flex-grow: 1;
-  max-width: 50%;
-}
-
-/* Material desing overrides */
-.mdl-switch {
-  width: auto;
-}
-
-.mdl-layout__header-row {
-  padding-left: 20px;
-}
+/* Material design overrides */
 
 .app-fab--absolute {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
   width: 56px;
   height: 56px;
   transition: all 0.2s ease;
