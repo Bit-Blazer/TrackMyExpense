@@ -49,6 +49,7 @@ body {
   margin: 0 auto;
   padding: 16px;
   gap: 16px;
+  border-radius: 0.8rem;
 }
 
 .mdc-card {
