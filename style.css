@@ -1,5 +1,9 @@
 /* Material design overrides */
 
+body {
+  margin: 0;
+}
+
 .app-fab--absolute {
   position: fixed;
   bottom: 1.5rem;
@@ -35,4 +39,39 @@
 .mdc-data-table {
   width: 90%;
   margin: 20px;
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  gap: 16px;
+}
+
+.mdc-card {
+  min-width: 12rem;
+  padding: 16px;
+  border-radius: 0.8rem;
+}
+
+.mdc-typography--headline6 {
+  margin-bottom: 8px;
+}
+
+.mdc-typography--subtitle1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.mdc-typography--caption {
+  color: green;
+  /* Change to red if negative */
+}
+
+.mdc-card__primary-action{
+  border-radius: 0.8rem;
+
 }

@@ -8,12 +8,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Material Icons -->
+  <!-- Material Icons and Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 
-  <!-- Material Design Lite CSS and JS -->
+  <!-- Material Design Lite CSS and JS 
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>-->
 
   <!-- Material Components Web CSS and JS -->
   <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" />
@@ -131,8 +132,35 @@
   <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
     <!-- Expense Table -->
     <main class="main-content" id="main-content">
+      <section class="card-container">
+
+        <!-- Total Income Card -->
+        <div class="mdc-card__primary-action mdc-card ">
+          <div class="mdc-card__ripple"></div>
+          <h2 class="mdc-typography--headline6">Total Income</h2>
+          <p class="mdc-typography--subtitle1">$10550</p>
+          <div class="mdc-typography--caption">+7%</div>
+        </div>
+
+        <!-- Total Expenses Card -->
+        <div class="mdc-card mdc-card__primary-action">
+          <div class="mdc-card__ripple"></div>
+          <h2 class="mdc-typography--headline6">Total Expenses</h2>
+          <p class="mdc-typography--subtitle1">$46505</p>
+          <div class="mdc-typography--caption">-25%</div>
+        </div>
+
+        <!-- Current Balance Card -->
+        <div class="mdc-card mdc-card__primary-action">
+          <div class="mdc-card__ripple"></div>
+          <h2 class="mdc-typography--headline6">Current Balance</h2>
+          <p class="mdc-typography--subtitle1">$56500</p>
+          <div class="mdc-typography--caption">+19%</div>
+        </div>
+        
+      </section>
       <section class="expenses-list">
-        <h5>Expenses List</h5>
+        <h5 class="mdc-typography--headline5">Expenses List</h5>
         <div class="mdc-data-table">
           <div class="mdc-data-table__table-container">
 
