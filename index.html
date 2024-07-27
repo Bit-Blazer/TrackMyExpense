@@ -70,35 +70,58 @@
 
   <aside class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
-      <nav class="mdc-list">
-        <div class="mdc-drawer__header">
-          <h3 class="mdc-typography--headline6">TrackMyExpense</h3>
-        </div>
+      <ul class="mdc-list">
 
-        <hr class="mdc-list-divider" />
+        <li class="mdc-list-item">
+          <div class="mdc-drawer__header">
+            <h3 class="mdc-drawer__title">TrackMyExpense</h3>
+          </div>
+        </li>
 
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" aria-current="page"
-          tabindex="0">
+        <li class="mdc-list-divider" role="separator"></li>
+
+        <li class="mdc-list-item mdc-list-item--with-leading-icon mdc-list-item--activated mdc-list-item--with-one-line"
+          aria-selected="true" aria-current="page" tabindex="0">
           <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
-          <span class="mdc-list-item__text">Dashboard</span>
-        </a>
-        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__start">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
+          </span>
+          <span class="mdc-list-item__content">
+            <span class="mdc-list-item__primary-text ">Dashboard</span>
+          </span>
+        </li>
+
+        <li class="mdc-list-item mdc-list-item--with-leading-icon mdc-list-item--with-one-line">
           <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
-          <span class="mdc-list-item__text">Transactions</span>
-        </a>
-        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__start">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
+          </span>
+          <span class="mdc-list-item__content">
+            <span class="mdc-list-item__primary-text ">Transactions</span>
+          </span>
+        </li>
+
+        <li class="mdc-list-item mdc-list-item--with-leading-icon  mdc-list-item--with-one-line">
           <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
-          <span class="mdc-list-item__text">Reports</span>
-        </a>
-        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__start">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list_alt</i>
+          </span>
+          <span class="mdc-list-item__content">
+            <span class="mdc-list-item__primary-text ">Reports</span>
+          </span>
+        </li>
+
+        <li class="mdc-list-item mdc-list-item--with-leading-icon  mdc-list-item--with-one-line">
           <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_balance</i>
-          <span class="mdc-list-item__text">Bank Accounts</span>
-        </a>
-      </nav>
+          <span class="mdc-list-item__start">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_balance</i>
+          </span>
+          <span class="mdc-list-item__content">
+            <span class="mdc-list-item__primary-text ">Bank Accounts</span>
+          </span>
+        </li>
+
+      </ul>
     </div>
   </aside>
 

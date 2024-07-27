@@ -298,7 +298,7 @@ drawerList.addEventListener('click', () => {
   drawer.open = false;
 });
 
-document.body.addEventListener('MDCDrawer:closed', () => {
-  mainContentEl.querySelector('input, button').focus();
-});
+// document.body.addEventListener('MDCDrawer:closed', () => {
+//   mainContentEl.querySelector('input, button').focus();
+// });
 
