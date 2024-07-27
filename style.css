@@ -4,13 +4,15 @@ body {
   margin: 0;
 }
 
-.app-fab--absolute {
+.mdc-fab {
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1;
   width: 56px;
   height: 56px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  overflow: hidden;
 
   .mdc-fab__label {
     display: none;
@@ -26,7 +28,6 @@ body {
     }
 
     .mdc-fab__icon {
-      margin-left: calc(12px - 20px);
       margin-right: 12px;
     }
 
@@ -72,7 +73,11 @@ body {
   /* Change to red if negative */
 }
 
-.mdc-card__primary-action{
+.mdc-card__primary-action {
   border-radius: 0.8rem;
+}
 
+:root {
+  --mdc-theme-primary: #3773ff;
+  --mdc-theme-secondary: #cc3363;
 }
