@@ -23,9 +23,8 @@ const CONFIG = {
  * @typedef {Object} DOMElements
  * @property {HTMLElement} loginButton - The login button element
  * @property {HTMLElement} logoutButton - The logout button element
- * @property {HTMLElement} forms - The forms container element
- * @property {HTMLElement} formLoader - The form loader element
  * @property {HTMLElement} snackbar - The snackbar container element
+ * @property {HTMLElement} addExpenseBtn - FAB for adding Expense element
  */
 
 /**
@@ -34,30 +33,8 @@ const CONFIG = {
 const DOM = {
   loginButton: document.getElementById("login_button"),
   logoutButton: document.getElementById("logout_button"),
-  forms: document.getElementById("forms"),
-  formLoader: document.getElementById("form-loader"),
-  snackbar: document.getElementById("toast-container"),
-
-  expenseForm: document.getElementById("expense-form"),
-  transferForm: document.getElementById("transfer-form"),
-
-  expensedescription: document.getElementById("expense-description"),
-  transferdescription: document.getElementById("transfer-description"),
-
-  expensedate: document.getElementById("expense-date"),
-  transferdate: document.getElementById("transfer-date"),
-
-  accountEl: document.getElementById("expense-account"),
-  categoryEl: document.getElementById("expense-category"),
-
-  expenseamount: document.getElementById("expense-amount"),
-  transferamount: document.getElementById("transfer-amount"),
-
-  isIncomeEl: document.getElementById("is-income"),
-  addExpenseBtn: document.getElementById("add-expense"),
-  fromAccountEl: document.getElementById("transfer-from-account"),
-  toAccountEl: document.getElementById("transfer-to-account"),
-  saveBtn: document.getElementById("save"),
+  snackbar: document.getElementById("snackbar"),
+  addExpenseBtn: document.getElementById("add-expense-button"),
 };
 
 // Initialize Material Components
@@ -144,7 +121,6 @@ function handleLogout() {
   if (token) {
     google.accounts.oauth2.revoke(token.access_token);
     gapi.client.setToken("");
-    utils.showLoader();
     utils.showElement(DOM.loginButton);
     utils.hideElement(DOM.logoutButton);
     utils.logSuccess("Logged out successfully");
@@ -157,7 +133,6 @@ function handleLogout() {
 async function initializeApp() {
   utils.hideElement(DOM.loginButton);
   utils.showElement(DOM.logoutButton);
-  utils.hideLoader();
 
   try {
     const sheetId = await getOrCreateSheet();
@@ -279,7 +254,7 @@ window.gisLoaded = initGis;
 
 const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
-topAppBar.setScrollTarget(document.getElementById('main-content'));
+topAppBar.setScrollTarget(document.querySelector('.main-content'));
 topAppBar.listen('MDCTopAppBar:nav', () => {
   drawer.open = !drawer.open;
 });

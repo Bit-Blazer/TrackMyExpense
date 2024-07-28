@@ -131,7 +131,7 @@
 
   <!-- Body -->
   <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
-    <main class="main-content" id="main-content">
+    <main class="main-content">
 
       <!-- Cards -->
       <section class="card-container">
@@ -140,24 +140,24 @@
         <div class=" mdc-card mdc-card__primary-action">
           <div class="mdc-card__ripple"></div>
           <h2 class="mdc-typography--headline6">Total Income</h2>
-          <p class="mdc-typography--subtitle1">$10550</p>
-          <div class="mdc-typography--caption">+7%</div>
+          <p class="mdc-typography--subtitle1" id="totIncome">$10550</p>
+          <div class="mdc-typography--caption" id="perIncome">+7%</div>
         </div>
 
         <!-- Total Expenses Card -->
         <div class="mdc-card mdc-card__primary-action">
           <div class="mdc-card__ripple"></div>
           <h2 class="mdc-typography--headline6">Total Expenses</h2>
-          <p class="mdc-typography--subtitle1">$46505</p>
-          <div class="mdc-typography--caption">-25%</div>
+          <p class="mdc-typography--subtitle1" id="totExpense">$46505</p>
+          <div class="mdc-typography--caption" id="perExpense">-25%</div>
         </div>
 
         <!-- Current Balance Card -->
         <div class="mdc-card mdc-card__primary-action">
           <div class="mdc-card__ripple"></div>
           <h2 class="mdc-typography--headline6">Current Balance</h2>
-          <p class="mdc-typography--subtitle1">$56500</p>
-          <div class="mdc-typography--caption">+19%</div>
+          <p class="mdc-typography--subtitle1" id="curBalance">$56500</p>
+          <div class="mdc-typography--caption" id="perBalance">+19%</div>
         </div>
 
       </section>
@@ -290,8 +290,8 @@
       <span class="mdc-fab__label">Add Expense</span>
     </button>
 
-    <!-- Toast/Snackbar for notifications -->
-    <div class="mdc-snackbar" id="toast-container">
+    <!-- Snackbar for notifications -->
+    <div class="mdc-snackbar" id="snackbar">
       <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
         <div class="mdc-snackbar__label" aria-atomic="false">
           <!-- Snackbar message will be set dynamically -->
