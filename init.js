@@ -16,7 +16,7 @@ const CONFIG = {
     "https://sheets.googleapis.com/$discovery/rest?version=v4",
     "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
   ],
-  SCOPES: "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.readonly",
+  SCOPES: "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive",
 };
 
 /**
@@ -136,8 +136,8 @@ async function initializeApp() {
 
   try {
     const sheetId = await getOrCreateSheet();
-    const { accounts, categories } = await fetchSheetData(sheetId);
-    initializeForms(sheetId, accounts, categories);
+    // const { accounts, categories } = await fetchSheetData(sheetId);
+    // initializeForms(sheetId, accounts, categories);
     utils.logSuccess("App initialized successfully");
   } catch (error) {
     utils.logError("Failed to initialize app", error);
@@ -148,15 +148,15 @@ async function initializeApp() {
  * Gets or creates a sheet
  * @returns {Promise<string>} The sheet ID
  */
-async function getOrCreateSheet() {
+async function fetchOrCopySheet() {
   try {
-    const sheetId = await findSheet();
+    const sheetId = await fetchSheet();
     utils.logSuccess("Existing sheet found");
     return sheetId;
   } catch {
     utils.logError("Sheet Not Found...");
     utils.logSuccess("Creating new sheet");
-    return createSheet();
+    return copySheet();
   }
 }
 
@@ -164,7 +164,7 @@ async function getOrCreateSheet() {
  * Finds an existing sheet
  * @returns {Promise<string>} The sheet ID
  */
-function findSheet() {
+function fetchSheet() {
   return new Promise((resolve, reject) => {
     gapi.client.drive.files
       .list({
@@ -175,48 +175,36 @@ function findSheet() {
         else resolve(response.result.files[0].id);
       })
       .catch(reject);
-  });
+  }); 
 }
 
 /**
- * Creates a new sheet
- * @returns {Promise<string>} The new sheet ID
+ * Copies the template Sheet to user's Drive and returns the new sheet ID.
+ *
+ * @returns {Promise<string>} - The new sheet ID.
  */
-function createSheet() {
-  return new Promise((resolve, reject) => {
-    gapi.client.sheets.spreadsheets
-      .create({
-        properties: { title: "Expense Sheet" },
-        sheets: [
-          {
-            properties: {
-              title: "Expenses",
-              gridProperties: { columnCount: 4, frozenRowCount: 1 },
-            },
-            data: [
-              {
-                rowData: [
-                  {
-                    values: [
-                      { userEnteredValue: { stringValue: "Description" } },
-                      { userEnteredValue: { stringValue: "Amount" } },
-                      { userEnteredValue: { stringValue: "Category" } },
-                      { userEnteredValue: { stringValue: "Date" } },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      })
-      .then((response) => {
-        const sheetId = response.result.spreadsheetId;
-        utils.logSuccess(`New sheet created with ID: ${sheetId}`);
-        resolve(sheetId);
-      })
-      .catch(reject);
-  });
+async function copySheet() {
+  try {
+      // Load the gapi client
+      await gapi.client.load('drive', 'v3');
+
+      // Copy the file
+      const copyResponse = await gapi.client.drive.files.copy({
+        fileId: "13Osz5eiNwMn8HeX1AsxoPYpLUH9JztOHeU2z6uXjFe8",
+        resource: {
+          name: "Expenses Sheet",
+          mimeType: 'application/vnd.google-apps.spreadsheet'
+        }
+      });
+
+      const newSheetId = copyResponse.result.id;
+      console.log('New Sheet ID:', newSheetId);
+      // show snackbar for new sheet created
+      return newSheetId;
+  } catch (error) {
+      console.error('Error copying the sheet:', error);
+      throw error;
+  }
 }
 
 /**
@@ -225,8 +213,8 @@ function createSheet() {
  * @returns {Promise<{accounts: string[], categories: string[]}>} The fetched data
  */
 async function fetchSheetData(sheetId) {
-  const ACCOUNT_RANGE = "Data!A2:A50";
-  const CATEGORY_RANGE = "Data!E2:E50";
+  const ACCOUNT_RANGE = "Monthly Expenses!B10:B15";
+  const CATEGORY_RANGE = "Monthly Expenses!D10:D15";
   const response = await gapi.client.sheets.spreadsheets.values.batchGet(
     window.expenseManager.utils.batchGetRequestObj(sheetId, [ACCOUNT_RANGE, CATEGORY_RANGE])
   );
