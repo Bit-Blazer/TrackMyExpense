@@ -19,33 +19,10 @@ const CONFIG = {
   SCOPES: "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive",
 };
 
-/**
- * @typedef {Object} DOMElements
- * @property {HTMLElement} loginButton - The login button element
- * @property {HTMLElement} logoutButton - The logout button element
- * @property {HTMLElement} snackbar - The snackbar container element
- * @property {HTMLElement} addExpenseBtn - FAB for adding Expense element
- */
-
-/**
- * @type {DOMElements}
- */
-const DOM = {
-  loginButton: document.getElementById("login_button"),
-  logoutButton: document.getElementById("logout_button"),
-  snackbar: document.getElementById("snackbar"),
-  addExpenseBtn: document.getElementById("add-expense-button"),
-};
-
-// Initialize Material Components
-mdc.autoInit();
-
 // Variables
 let tokenClient;
 let gapiInitialized = false;
 let gisInitialized = false;
-
-const utils = window.expenseManager.utils;
 
 /**
  * Initializes the Google API client library
@@ -59,9 +36,9 @@ function initGapi() {
       });
       gapiInitialized = true;
       checkInitialization();
-      utils.logSuccess("Google API client initialized");
+      window.expenseManager.utils.logSuccess("Google API client initialized");
     } catch (error) {
-      utils.logError("Failed to initialize Google API client", error);
+      window.expenseManager.utils.logError("Failed to initialize Google API client", error);
     }
   });
 }
@@ -77,7 +54,7 @@ function initGis() {
   });
   gisInitialized = true;
   checkInitialization();
-  utils.logSuccess("Google Identity Services initialized");
+  window.expenseManager.utils.logSuccess("Google Identity Services initialized");
 }
 
 /**
@@ -85,7 +62,7 @@ function initGis() {
  */
 function checkInitialization() {
   if (gapiInitialized && gisInitialized) {
-    utils.showElement(DOM.loginButton);
+    window.expenseManager.utils.showElement(DOM.loginButton);
   }
 }
 
@@ -95,10 +72,10 @@ function checkInitialization() {
  */
 function handleAuthResponse(response) {
   if (response.error) {
-    utils.logError("Authentication failed", response.error);
+    window.expenseManager.utils.logError("Authentication failed", response.error);
     return;
   }
-  utils.logSuccess("Authentication successful");
+  window.expenseManager.utils.logSuccess("Authentication successful");
   initializeApp();
 }
 
@@ -121,133 +98,12 @@ function handleLogout() {
   if (token) {
     google.accounts.oauth2.revoke(token.access_token);
     gapi.client.setToken("");
-    utils.showElement(DOM.loginButton);
-    utils.hideElement(DOM.logoutButton);
-    utils.logSuccess("Logged out successfully");
+    window.expenseManager.utils.showElement(DOM.loginButton);
+    window.expenseManager.utils.hideElement(DOM.logoutButton);
+    window.expenseManager.utils.logSuccess("Logged out successfully");
   }
-}
-
-/**
- * Initializes the application
- */
-async function initializeApp() {
-  utils.hideElement(DOM.loginButton);
-  utils.showElement(DOM.logoutButton);
-
-  try {
-    const sheetId = await getOrCreateSheet();
-    // const { accounts, categories } = await fetchSheetData(sheetId);
-    // initializeForms(sheetId, accounts, categories);
-    utils.logSuccess("App initialized successfully");
-  } catch (error) {
-    utils.logError("Failed to initialize app", error);
-  }
-}
-
-/**
- * Gets or creates a sheet
- * @returns {Promise<string>} The sheet ID
- */
-async function fetchOrCopySheet() {
-  try {
-    const sheetId = await fetchSheet();
-    utils.logSuccess("Existing sheet found");
-    return sheetId;
-  } catch {
-    utils.logError("Sheet Not Found...");
-    utils.logSuccess("Creating new sheet");
-    return copySheet();
-  }
-}
-
-/**
- * Finds an existing sheet
- * @returns {Promise<string>} The sheet ID
- */
-function fetchSheet() {
-  return new Promise((resolve, reject) => {
-    gapi.client.drive.files
-      .list({
-        q: `name='Expense Sheet' and mimeType='application/vnd.google-apps.spreadsheet'`,
-      })
-      .then((response) => {
-        if (response.result.files.length === 0) reject();
-        else resolve(response.result.files[0].id);
-      })
-      .catch(reject);
-  }); 
-}
-
-/**
- * Copies the template Sheet to user's Drive and returns the new sheet ID.
- *
- * @returns {Promise<string>} - The new sheet ID.
- */
-async function copySheet() {
-  try {
-      // Load the gapi client
-      await gapi.client.load('drive', 'v3');
-
-      // Copy the file
-      const copyResponse = await gapi.client.drive.files.copy({
-        fileId: "13Osz5eiNwMn8HeX1AsxoPYpLUH9JztOHeU2z6uXjFe8",
-        resource: {
-          name: "Expenses Sheet",
-          mimeType: 'application/vnd.google-apps.spreadsheet'
-        }
-      });
-
-      const newSheetId = copyResponse.result.id;
-      console.log('New Sheet ID:', newSheetId);
-      // show snackbar for new sheet created
-      return newSheetId;
-  } catch (error) {
-      console.error('Error copying the sheet:', error);
-      throw error;
-  }
-}
-
-/**
- * Fetches sheet data
- * @param {string} sheetId - The sheet ID
- * @returns {Promise<{accounts: string[], categories: string[]}>} The fetched data
- */
-async function fetchSheetData(sheetId) {
-  const ACCOUNT_RANGE = "Monthly Expenses!B10:B15";
-  const CATEGORY_RANGE = "Monthly Expenses!D10:D15";
-  const response = await gapi.client.sheets.spreadsheets.values.batchGet(
-    window.expenseManager.utils.batchGetRequestObj(sheetId, [ACCOUNT_RANGE, CATEGORY_RANGE])
-  );
-  return {
-    accounts: response.result.valueRanges[0].values[0],
-    categories: response.result.valueRanges[1].values[0],
-  };
-}
-
-/**
- * Initializes the forms
- * @param {string} sheetId - The sheet ID
- * @param {string[]} accounts - List of account names
- * @param {string[]} categories - List of expense categories
- */
-function initializeForms(sheetId, accounts, categories) {
-  window.expenseManager.expenseForm.init(sheetId, accounts, categories);
-  window.expenseManager.transferForm.init(sheetId, accounts);
-  utils.logSuccess("Forms initialized");
 }
 
 // Initialization
 window.gapiLoaded = initGapi;
 window.gisLoaded = initGis;
-
-const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
-const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
-topAppBar.setScrollTarget(document.querySelector('.main-content'));
-topAppBar.listen('MDCTopAppBar:nav', () => {
-  drawer.open = !drawer.open;
-});
-
-const drawerList = document.querySelector('.mdc-drawer .mdc-list');
-drawerList.addEventListener('click', () => {
-  drawer.open = false;
-});
