@@ -328,7 +328,7 @@ document.querySelectorAll('.mdc-data-table__header-cell--with-sort').forEach(hea
 });
 
 
-
+// garbage
 /**
  * Initializes the forms
  * @param {string} sheetId - The sheet ID

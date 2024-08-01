@@ -2,6 +2,7 @@
 
 body {
   margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 .mdc-fab {
@@ -80,4 +81,12 @@ body {
 :root {
   --mdc-theme-primary: #3773ff;
   --mdc-theme-secondary: #cc3363;
+}
+.dialog {
+  padding: 20px;
+  width: 300px;
+}
+
+.mdc-data-table {
+  margin: 4rem;
 }

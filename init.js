@@ -1,4 +1,5 @@
 /**
+ * Configuration object for Google API and Identity Services
  * @typedef {Object} Config
  * @property {string} CLIENT_ID - The Google OAuth 2.0 client ID
  * @property {string} API_KEY - The Google API key
@@ -76,6 +77,8 @@ function handleAuthResponse(response) {
     return;
   }
   window.expenseManager.utils.logSuccess("Authentication successful");
+  window.expenseManager.utils.hideElement(DOM.loginButton);
+  window.expenseManager.utils.showElement(DOM.logoutButton);
   initializeApp();
 }
 
