@@ -82,11 +82,20 @@ body {
   --mdc-theme-primary: #3773ff;
   --mdc-theme-secondary: #cc3363;
 }
-.dialog {
-  padding: 20px;
-  width: 300px;
-}
 
 .mdc-data-table {
   margin: 4rem;
+}
+
+.tab-content .tab-pane {
+  display: none;
+}
+
+.tab-content .tab-pane.active {
+  display: block;
+}
+
+.mdc-dialog .mdc-text-field {
+  display: block;
+  margin: 16px;
 }

@@ -104,7 +104,7 @@ DOM.topAppBar.listen("MDCTopAppBar:nav", () => {
     DOM.drawer.open = !DOM.drawer.open;
 });
 
-DOM.drawerList.addEventListener("click", () => {
+DOM.drawerList.listen("MDCList:action", () => {
     DOM.drawer.open = false;
 });
 
@@ -327,35 +327,14 @@ document.querySelectorAll('.mdc-data-table__header-cell--with-sort').forEach(hea
     });
 });
 
-
-// garbage
-/**
- * Initializes the forms
- * @param {string} sheetId - The sheet ID
- * @param {string[]} accounts - List of account names
- * @param {string[]} categories - List of expense categories
- */
-function initializeForms(sheetId, accounts, categories) {
-    window.expenseManager.expenseForm.init(sheetId, accounts, categories);
-    window.expenseManager.transferForm.init(sheetId, accounts);
-    window.expenseManager.utils.logSuccess("Forms initialized");
-}
-
-
-DOM.fab.addEventListener("click", function () {
-    DOM.dialog.showModal();
+// Event listener for the FAB to open the dialog
+DOM.fab.addEventListener("click", () => {
+    DOM.dialog.open();
 });
 
-
-DOM.closeBtn.addEventListener("click", function () {
-    DOM.dialog.close();
-});
-
-DOM.dialog.addEventListener("close", function () {
-    const form = this.querySelector("form");
-    if (form.checkValidity()) {
-        const name = form.expenseName.value;
-        const amount = form.expenseAmount.value;
-        window.expenseManager.utils.logSuccess("Expense Added:", name, amount);
-    }
+// Event listener for tab change
+DOM.tabBar.listen('MDCTabBar:activated', (event) => {
+    document.querySelectorAll('.tab-pane').forEach((tab, index) => {
+        tab.classList.toggle('active', index === event.detail.index);
+    });
 });
