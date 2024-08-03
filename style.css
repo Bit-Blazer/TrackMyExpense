@@ -56,15 +56,19 @@ body {
 
 .mdc-card {
   min-width: 12rem;
-  padding: 1rem;
-  border-radius: 0.8rem;
+  border-radius: 1rem;
+  width: 200px;
+}
+
+.mdc-card__content {
+  padding: 16px;
 }
 
 .mdc-typography--headline6 {
-  margin-bottom: 0.5rem;
+  margin: 0.5rem;
 }
 
-.mdc-typography--subtitle1 {
+.mdc-typography--headline5 {
   margin: 0;
   font-size: 2rem;
 }
@@ -72,10 +76,6 @@ body {
 .mdc-typography--caption {
   color: green;
   /* Change to red if negative */
-}
-
-.mdc-card__primary-action {
-  border-radius: 0.8rem;
 }
 
 :root {

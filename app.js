@@ -23,7 +23,7 @@ async function initializeApp() {
 async function fetchOrCopySheet() {
     try {
         const sheetId = await fetchSheet();
-        window.expenseManager.utils.logSuccess("Existing sheet found");
+        window.expenseManager.utils.logSuccess("Existing sheet found", sheetId);
         return sheetId;
     } catch {
         window.expenseManager.utils.logError("Sheet Not Found...");
@@ -112,101 +112,7 @@ DOM.drawerList.listen("MDCList:action", () => {
 let currentPage = 1;
 let rowsPerPage = 10;
 let totalRows = 0;
-// Placeholder data (FOR TESTING), will be replaced by dynamically fetched data from Google Sheets
-let expenseRecords = [
-    ["2024-01-01", "Groceries", "Weekly grocery shopping", "100"],
-    ["2024-01-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-01-05", "Entertainment", "Movie night", "15"],
-    ["2024-01-08", "Utilities", "Electricity bill", "50"],
-    ["2024-01-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-01-12", "Groceries", "Vegetables and fruits", "30"],
-    ["2024-01-15", "Dining", "Dinner at restaurant", "45"],
-    ["2024-01-17", "Healthcare", "Doctor's appointment", "75"],
-    ["2024-01-20", "Groceries", "Weekly grocery shopping", "110"],
-    ["2024-01-22", "Transportation", "Taxi fare", "20"],
-    ["2024-01-25", "Utilities", "Water bill", "40"],
-    ["2024-01-27", "Entertainment", "Concert ticket", "60"],
-    ["2024-01-30", "Rent", "Monthly rent payment", "1200"],
-    ["2024-02-01", "Groceries", "Weekly grocery shopping", "105"],
-    ["2024-02-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-02-05", "Entertainment", "Movie night", "12"],
-    ["2024-02-08", "Utilities", "Electricity bill", "55"],
-    ["2024-02-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-02-12", "Groceries", "Vegetables and fruits", "28"],
-    ["2024-02-15", "Dining", "Lunch at cafe", "35"],
-    ["2024-02-17", "Healthcare", "Medicine", "25"],
-    ["2024-02-20", "Groceries", "Weekly grocery shopping", "112"],
-    ["2024-02-22", "Transportation", "Train ticket", "15"],
-    ["2024-02-25", "Utilities", "Gas bill", "45"],
-    ["2024-02-27", "Entertainment", "Streaming subscription", "10"],
-    ["2024-02-28", "Rent", "Monthly rent payment", "1200"],
-    ["2024-03-01", "Groceries", "Weekly grocery shopping", "102"],
-    ["2024-03-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-03-05", "Entertainment", "Movie night", "13"],
-    ["2024-03-08", "Utilities", "Electricity bill", "50"],
-    ["2024-03-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-03-12", "Groceries", "Vegetables and fruits", "31"],
-    ["2024-03-15", "Dining", "Dinner at restaurant", "50"],
-    ["2024-03-17", "Healthcare", "Dentist appointment", "80"],
-    ["2024-03-20", "Groceries", "Weekly grocery shopping", "108"],
-    ["2024-03-22", "Transportation", "Taxi fare", "22"],
-    ["2024-03-25", "Utilities", "Water bill", "42"],
-    ["2024-03-27", "Entertainment", "Concert ticket", "65"],
-    ["2024-03-30", "Rent", "Monthly rent payment", "1200"],
-    ["2024-04-01", "Groceries", "Weekly grocery shopping", "103"],
-    ["2024-04-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-04-05", "Entertainment", "Movie night", "14"],
-    ["2024-04-08", "Utilities", "Electricity bill", "52"],
-    ["2024-04-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-04-12", "Groceries", "Vegetables and fruits", "29"],
-    ["2024-04-15", "Dining", "Lunch at cafe", "36"],
-    ["2024-04-17", "Healthcare", "Medicine", "30"],
-    ["2024-04-20", "Groceries", "Weekly grocery shopping", "106"],
-    ["2024-04-22", "Transportation", "Train ticket", "12"],
-    ["2024-04-25", "Utilities", "Gas bill", "48"],
-    ["2024-04-27", "Entertainment", "Streaming subscription", "12"],
-    ["2024-04-30", "Rent", "Monthly rent payment", "1200"],
-    ["2024-05-01", "Groceries", "Weekly grocery shopping", "104"],
-    ["2024-05-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-05-05", "Entertainment", "Movie night", "16"],
-    ["2024-05-08", "Utilities", "Electricity bill", "53"],
-    ["2024-05-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-05-12", "Groceries", "Vegetables and fruits", "32"],
-    ["2024-05-15", "Dining", "Dinner at restaurant", "55"],
-    ["2024-05-17", "Healthcare", "Doctor's appointment", "70"],
-    ["2024-05-20", "Groceries", "Weekly grocery shopping", "107"],
-    ["2024-05-22", "Transportation", "Taxi fare", "18"],
-    ["2024-05-25", "Utilities", "Water bill", "44"],
-    ["2024-05-27", "Entertainment", "Concert ticket", "67"],
-    ["2024-05-30", "Rent", "Monthly rent payment", "1200"],
-    ["2024-06-01", "Groceries", "Weekly grocery shopping", "101"],
-    ["2024-06-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-06-05", "Entertainment", "Movie night", "17"],
-    ["2024-06-08", "Utilities", "Electricity bill", "51"],
-    ["2024-06-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-06-12", "Groceries", "Vegetables and fruits", "34"],
-    ["2024-06-15", "Dining", "Lunch at cafe", "37"],
-    ["2024-06-17", "Healthcare", "Medicine", "40"],
-    ["2024-06-20", "Groceries", "Weekly grocery shopping", "109"],
-    ["2024-06-22", "Transportation", "Train ticket", "14"],
-    ["2024-06-25", "Utilities", "Gas bill", "49"],
-    ["2024-06-27", "Entertainment", "Streaming subscription", "11"],
-    ["2024-06-30", "Rent", "Monthly rent payment", "1200"],
-    ["2024-07-01", "Groceries", "Weekly grocery shopping", "102"],
-    ["2024-07-03", "Transportation", "Bus ticket", "2.50"],
-    ["2024-07-05", "Entertainment", "Movie night", "19"],
-    ["2024-07-08", "Utilities", "Electricity bill", "54"],
-    ["2024-07-10", "Rent", "Monthly rent payment", "1200"],
-    ["2024-07-12", "Groceries", "Vegetables and fruits", "33"],
-    ["2024-07-15", "Dining", "Dinner at restaurant", "40"],
-    ["2024-07-17", "Healthcare", "Dentist appointment", "90"],
-    ["2024-07-20", "Groceries", "Weekly grocery shopping", "110"],
-    ["2024-07-22", "Transportation", "Taxi fare", "24"],
-    ["2024-07-25", "Utilities", "Water bill", "45"],
-    ["2024-07-27", "Entertainment", "Concert ticket", "69"],
-    ["2024-07-30", "Rent", "Monthly rent payment", "1200"]
-];
-totalRows = expenseRecords.length;
+let expenseRecords = [];
 
 // Attach MDC DataTable component to the table
 const dataTable = mdc.dataTable.MDCDataTable.attachTo(document.querySelector(".mdc-data-table"));
@@ -291,10 +197,6 @@ function updatePagination() {
     paginationTotal.textContent = `${start}-${end} of ${totalRows}`;
     dataTable.hideProgress();
 }
-
-// Initial render of the first page (FOR TESTING)
-sortData(0, false); // Sort by recent date first
-renderCurrentPage();
 
 // Initial sort direction
 let isAsc = false;
