@@ -5,8 +5,9 @@
  * @property {HTMLElement} drawer - The drawer element
  * @property {HTMLElement} drawerList - The list inside the drawer
  * @property {HTMLElement} topAppBar - The top app bar element
+ * @property {HTMLElement} mainTabBar - Tab Bar in Home page
  * @property {HTMLElement} dialog - The dialog element
- * @property {HTMLElement} tabBar - Th
+ * @property {HTMLElement} dialogtabBar - Tab Bar in the dialog element
  * @property {HTMLElement} fab - The floating action button element for adding Expense
  * @property {HTMLElement} snackbar - The snackbar container element 
  */
@@ -20,8 +21,9 @@ const DOM = {
   drawer: mdc.drawer.MDCDrawer.attachTo(document.querySelector(".mdc-drawer")),
   drawerList: mdc.list.MDCList.attachTo(document.querySelector(".mdc-drawer .mdc-list")),
   topAppBar: mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector(".mdc-top-app-bar")),
+  mainTabBar: mdc.tabBar.MDCTabBar.attachTo(document.querySelector('.main-content .mdc-tab-bar')),
   dialog: mdc.dialog.MDCDialog.attachTo(document.querySelector(".mdc-dialog")),
-  tabBar: mdc.tabBar.MDCTabBar.attachTo(document.querySelector('.mdc-tab-bar')),
+  dialogtabBar: mdc.tabBar.MDCTabBar.attachTo(document.querySelector('.mdc-dialog__content .mdc-tab-bar')),
   fab: document.querySelector(".mdc-fab"),
   snackbar: mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar')),
 };

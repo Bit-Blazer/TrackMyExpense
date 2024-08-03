@@ -235,8 +235,14 @@ DOM.fab.addEventListener("click", () => {
 });
 
 // Event listener for tab change
-DOM.tabBar.listen('MDCTabBar:activated', (event) => {
-    document.querySelectorAll('.tab-pane').forEach((tab, index) => {
+DOM.mainTabBar.listen('MDCTabBar:activated', (event) => {
+    document.querySelectorAll('.main-content .tab-pane').forEach((tab, index) => {
+        tab.classList.toggle('active', index === event.detail.index);
+    });
+});
+
+DOM.dialogtabBar.listen('MDCTabBar:activated', (event) => {
+    document.querySelectorAll('.mdc-dialog__content .tab-pane').forEach((tab, index) => {
         tab.classList.toggle('active', index === event.detail.index);
     });
 });
