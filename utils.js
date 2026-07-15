@@ -1,7 +1,9 @@
 /**
  * @typedef {Object} DOMElements
- * @property {HTMLElement} loginButton - The login button element
- * @property {HTMLElement} logoutButton - The logout button element
+ * @property {HTMLElement} googleSignInBtn - Google Sign-In button Wrapper
+ * @property {HTMLElement} userInfo - User info display container
+ * @property {HTMLElement} userPicture - User profile picture
+ * @property {HTMLElement} userName - User name display
  * @property {HTMLElement} drawer - The drawer element
  * @property {HTMLElement} drawerList - The list inside the drawer
  * @property {HTMLElement} topAppBar - The top app bar element
@@ -9,23 +11,35 @@
  * @property {HTMLElement} dialog - The dialog element
  * @property {HTMLElement} dialogtabBar - Tab Bar in the dialog element
  * @property {HTMLElement} fab - The floating action button element for adding Expense
- * @property {HTMLElement} snackbar - The snackbar container element 
+ * @property {HTMLElement} snackbar - The snackbar container element
  */
 
 /**
  * @type {DOMElements}
  */
 const DOM = {
-  loginButton: document.querySelector("#login_button"),
-  logoutButton: document.querySelector("#logout_button"),
+  googleSignInBtn: document.querySelector("#google-signin-btn"),
+  userInfo: document.querySelector("#user_info"),
+  userPicture: document.querySelector("#user_picture"),
+  userName: document.querySelector("#user_name"),
   drawer: mdc.drawer.MDCDrawer.attachTo(document.querySelector(".mdc-drawer")),
-  drawerList: mdc.list.MDCList.attachTo(document.querySelector(".mdc-drawer .mdc-list")),
-  topAppBar: mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector(".mdc-top-app-bar")),
-  mainTabBar: mdc.tabBar.MDCTabBar.attachTo(document.querySelector('.main-content .mdc-tab-bar')),
+  drawerList: mdc.list.MDCList.attachTo(
+    document.querySelector(".mdc-drawer .mdc-list"),
+  ),
+  topAppBar: mdc.topAppBar.MDCTopAppBar.attachTo(
+    document.querySelector(".mdc-top-app-bar"),
+  ),
+  mainTabBar: mdc.tabBar.MDCTabBar.attachTo(
+    document.querySelector(".main-content .mdc-tab-bar"),
+  ),
   dialog: mdc.dialog.MDCDialog.attachTo(document.querySelector(".mdc-dialog")),
-  dialogtabBar: mdc.tabBar.MDCTabBar.attachTo(document.querySelector('.mdc-dialog__content .mdc-tab-bar')),
+  dialogtabBar: mdc.tabBar.MDCTabBar.attachTo(
+    document.querySelector(".mdc-dialog__content .mdc-tab-bar"),
+  ),
   fab: document.querySelector(".mdc-fab"),
-  snackbar: mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar')),
+  snackbar: mdc.snackbar.MDCSnackbar.attachTo(
+    document.querySelector(".mdc-snackbar"),
+  ),
 };
 
 /**
@@ -42,6 +56,7 @@ const DOM = {
  * @type {Utils}
  */
 const utilities = {
+  TEMPLATE_SPREADSHEET_ID: "13Osz5eiNwMn8HeX1AsxoPYpLUH9JztOHeU2z6uXjFe8",
   showElement: (el) => (el.style.display = "block"),
   hideElement: (el) => (el.style.display = "none"),
   showSnackbar: (message) => {

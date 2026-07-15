@@ -6,7 +6,7 @@ var urlsToCache = [
   "init.js",
   "transfer.js",
   "utils.js",
-  "expense.js"
+  "expense.js",
 ];
 
 // cache after the first install
@@ -16,7 +16,7 @@ self.addEventListener("install", function (event) {
     caches.open(CACHE_NAME).then(function (cache) {
       console.log("Opened cache");
       return cache.addAll(urlsToCache);
-    })
+    }),
   );
 });
 
@@ -28,12 +28,11 @@ self.addEventListener("fetch", function (event) {
       const response = await caches.match(event.request);
       var fetchPromise = fetch(event.request).then(function (networkResponse) {
         // cache same host files only
-        if (requestURL.hostname === "" ||
-          requestURL.hostname === "localhost")
+        if (requestURL.hostname === "" || requestURL.hostname === "localhost")
           cache.put(event.request, networkResponse.clone());
         return networkResponse;
       });
       return response || fetchPromise;
-    })
+    }),
   );
 });
